@@ -66,7 +66,6 @@
 								})
 								.tap(function () {
 									_screenModel.getNum();
-									
 								})
 							.gat()
 							.tag('div.number')
