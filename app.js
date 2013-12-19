@@ -57,6 +57,7 @@ app.get('/screen', function (req, res) {
 // 	res.send({table: Card.getCard(req)});
 // });
 app.get('/next',function(req,res){
+	console.log('dfghjkl;');
 	res.send(Screen.next());
 });
 app.get('/check/:num',function(req,res){

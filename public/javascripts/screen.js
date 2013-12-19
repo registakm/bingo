@@ -24,24 +24,29 @@
 
 	var _screenModel = new _screenModel();
 
-	_screenModel.getNum({
-		complete: function (res) {
-			var data = JSON.parse(res);
-			screenView.numSet(data);
-		}
-	});
-	_screenModel.getStatus({
-		complete: function (res) {
-			var dataArray = JSON.parse(res);
-			// screenView.getStatus(dataArray);
-		}
-	});
+		_screenModel.getNum({
+			complete: function (res) {
+				var data = JSON.parse(res);
+				screenView.numSet(data);
+			}
+		});
+
+	// _screenModel.getStatus({
+	// 	complete: function (res) {
+	// 		var dataArray = JSON.parse(res);
+	// 		// screenView.getStatus(dataArray);
+	// 	}
+	// });
 
 	function screenView () {};
 	screenView.prototype = {
 		numSet: function (data) {
-			var dataArray;
+			// var dataArray;
 			var number = data.number;
+			var s_num = String(number)
+			if(s_num.length === 1){
+				s_num = '0' + s_num;
+			}
 			var preNum = data.preNumber;
 			var header = tag('div.screen')
 								.tag('header.header_ara')
@@ -51,39 +56,23 @@
 								.gat()
 
 			var main = tag('div.main_area')
-							// .tag('div.btn pull')
-							// 	.tag('button.start_btn').text('pull').gat()
-							// 	.on('touchstart', function() {
-							// 		$(this).cls({'tap': 1});
-							// 	})
-							// 	.on('touchend', function() {
-							// 		$(this).cls({'tap': -1});
-							// 	})
-							// .gat()
+							.tag('div.btn pull')
+								.tag('button.start_btn').text('Pull').gat()
+								.on('touchstart', function() {
+									$(this).cls({'tap': 1});
+								})
+								.on('touchend', function() {
+									$(this).cls({'tap': -1});
+								})
+								.tap(function () {
+									_screenModel.getNum();
+									
+								})
+							.gat()
 							.tag('div.number')
-								.text(number)
+								.tag('span.ten_place.num').text(s_num.substring(0, 1)).gat()
+								.tag('span.one_place.num').text(s_num.substring(1, 2)).gat()
 							.gat();
-
-			// var side = tag('div.side_area')
-			// 			.tag('div.reach_num_content')
-			// 				.tag('h2')
-			// 					.text('- REACH -')
-			// 				.gat()
-			// 				.tag('p.reach_number_of')
-			// 					.tag('span.num').text('1').gat()
-			// 					.tag('span.person').text('人').gat()
-			// 				.gat()
-			// 			.gat()
-			// 			.tag('div.reach_name_content')
-			// 				.tag('ul')
-			// 					.tag('li')
-			// 						.exec(function () {
-			// 							debugger;
-			// 						})
-			// 						.text('a')
-			// 					.gat()
-			// 				.gat()
-			// 			.gat()
 
 			var bottom = tag('div.bottom_area')
 							.tag('p')
@@ -110,7 +99,7 @@
 				.append(bottom);
 		},
 		getStatus: function (dataArray) {
-			console.log(dataArray);
+			// console.log(dataArray);
 		}
 	}
 	var screenView = new screenView();
