@@ -1,5 +1,5 @@
 // $.ready(function (){
-	var api = 'http://localhost:3000';
+	var api = 'http://182.48.54.233:3000/';
 	// $('body').css({height: 1000 + 'px'}); // set dummy height
 	// window.scrollTo(0, 1);
 	// var v = $.viewport().window;
