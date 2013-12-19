@@ -1,7 +1,7 @@
 (function (w){
 	
 	var w = window;
-	var api = 'http://182.48.54.233:3000/';
+	var api = 'http://182.48.54.233:3000';
 	w.tag = $.tag;
 	w.log = $.log;
 
