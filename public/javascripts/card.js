@@ -349,7 +349,7 @@
 								.tag('label')
 									.tag('div.form_info')
 										.tag('span.name').text('あなたのお名前は？').gat()
-										.tag('span.name1').text('最大全角10文字').gat()
+										// .tag('span.name1').text('最大全角10文字').gat()
 									.gat()
 									.tag('div.input_info')
 										.tag('input').attr({type: 'text'}).gat()
