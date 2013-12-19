@@ -51,7 +51,7 @@ $.ready(function() {
 	w.log = $.log;
 
 	$.load(
-		'./js/bingo.min.js',
+		'./javascripts/card.js',
 		function() {
 			$('body').css({height: 1000 + 'px'}); // set dummy height
 			setTimeout(function() {
@@ -62,7 +62,7 @@ $.ready(function() {
 			}, 1000);
 		}
 	);
-	var cssurl = './css/bingo.css';
+	var cssurl = './stylesheets/bingo.css';
 	$.load(cssurl, function() {
 		adjustCss(cssurl)
 	});

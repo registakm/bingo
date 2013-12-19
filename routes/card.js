@@ -1,10 +1,18 @@
 var _ = require('underscore');
-var card = [];
 	//カード生成
-	exports.init = function () {
+	exports.login = function (req, res) {
+		var name = req.param('name');
+		req.session.name = name;
+		res.redirect('/')
+	}
+	exports.getCard = function (req) {
+		var card = [];
 		var MTRIX = 5;
 		var RANGE = 15;
-		var CENTER = [2, 2];
+
+		if(req.session.card) {
+			return req.session.card;
+		}
 
 		for(var j = 0; j < MTRIX ;j++){
 			var tmp = [];
@@ -20,7 +28,7 @@ var card = [];
 		}
 
 		var tmpCard = [];
-		for(var i= 0;i<5;i++){
+		for(var i = 0;i < MTRIX;i++){
 			tmp = [];
 			for(var j = 0; j< 5;j++){
 				tmp.push(card[j][i])
@@ -31,12 +39,25 @@ var card = [];
 
 		card [2][2] = null;
 
+		req.session.card = card;
+
 		return card;
 	}
 	//ビンゴorリーチをクライアントに返す
-	exports.check = function(boolCard){
+	exports.check = function(card){
 
+		var boolCard  = [];
+		console.log(card);
+		for (var i = 0;i < 5; i++) {
+			var tmpCard = [];
+			for(var j = 0; j < 5; j++){
+				tmpCard.push(require('./screen').check(card[i][j]) ? 1: 0);
+			}
+			boolCard.push(tmpCard);
+		}
 		boolCard[2][2] = 1;
+		console.log(boolCard);
+
 		//line
 		for (var i = 0;i < 5; i++) {
 			var cnt = 0;
@@ -79,6 +100,5 @@ var card = [];
 				return 'REACH';
 			}
 		}
-
 		return 'NONE';
 	}

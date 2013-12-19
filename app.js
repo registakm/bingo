@@ -25,45 +25,57 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(express.cookieParser('secretKey'));
+app.use(express.session({
+	key:'name'
+}));
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+	app.use(express.errorHandler());
 }
 
 Screen.init();
-app.get('/screen', function (req,res){
-  res.render('./screen', {title: "Let\'s enjoy Bingo"});
+app.get('/', function (req, res) {
+	// if(!req.session.name){
+		res.render('./login', {});
+	// } else {
+	// 	res.render('./bingo', {});
+	// }
 });
-app.get('/bingo', function (req, res){
-	res.render('./bingo', {})
+app.get('/screen', function (req, res) {
+	res.render('./screen', {});
 });
 
 
 
+// app.post('/', Card.login);
 
-app.get('/card', function (req,res) {
-  res.send({card: Card.init()});
-});
+// app.get('/card', function (req, res) {
+// 	res.send({table: Card.getCard(req)});
+// });
 app.get('/next',function(req,res){
-	res.send({number: Screen.next()});
+	res.send(Screen.next());
 });
 app.get('/check/:num',function(req,res){
-	res.send({bool: Screen.check(req.param('num'))})
+	res.send({bool: Screen.check(req.param('num'))});
 });
-app.get('/reach/:name',function(req,res){
-	return {bool: Screen.addReachList(req.param('name'))};
+app.post('/reach/:name',function(req,res){
+	var name = req.param('name');
+	var reachList = [];
+	Screen.addReachList(name);
 });
-app.get('/bingo/:name',function(req,res){
-	return {bool: Screen.addBingoList(req.param('name'))};
+app.post('/bingo',function(req,res){
+	var name = req.param('name');
+	// res.send({bool: Screen.addBingoList(req.session.name)});
 });
 
 app.get('/status',function(req,res){
-	return {reachList: Screen.getReachList(), bingoList: Screen.getBingoList()};
+	res.send({reachList: Screen.getReachList()});
 });
 
 http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+	console.log('Express server listening on port ' + app.get('port'));
 });

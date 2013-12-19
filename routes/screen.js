@@ -4,7 +4,7 @@
 	var reachList = [];
 	var bingoList = [];
 	var NUMBER_MAX = 75;
-
+	var first = false;
 	var _ = require('underscore');
 	// var redis = require('redis')
 	// 	,client = redis.createClient();
@@ -35,18 +35,31 @@
 		// 		console.log(data)
 		// 	}
 		//});
-		if (index < NUMBER_MAX + 1) {
-			return orderList[index++];
+		var results = {};
+		if (!first) {
+			results.number = orderList[index];
+			first = true;
+		} else if (index < NUMBER_MAX + 1 && first) {
+			index++;
+			results.number = orderList[index];
+			results.preNumber = [];
+			if(index > 0){
+				results.preNumber.push(orderList[index - 1]);
+			}
+			if(index > 1){
+				results.preNumber.push(orderList[index - 2]);
+			}
+			if(index > 2){
+				results.preNumber.push(orderList[index - 3]);
+			}
 		}
-		return null;
+		return results;
 	};
-
-	//もうでた値かチェック
+	//押せる値かチェック
 	exports.check = function(num) {
 		var tmpNum = _.indexOf(orderList, num);
 		return tmpNum != -1 && tmpNum <= index;
 	};
-
 	exports.getReachList = function() {
 		return reachList;
 	}
@@ -57,7 +70,7 @@
 
 	exports.addReachList = function(name) {
 		var tmpNum = _.indexOf(reachList, name);
-		if(tmpNum == -1){
+		if(tmpNum == -1) {
 			reachList.push(name);
 			return true;
 		}
@@ -66,7 +79,7 @@
 
 	exports.addBingoList = function(name) {
 		var tmpNum = _.indexOf(bingoList, name);
-		if(tmpNum == -1){
+		if(tmpNum == -1) {
 			bingoList.push(name);
 			_.without(reachList, name);
 			return true;
